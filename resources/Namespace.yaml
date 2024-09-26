@@ -1,0 +1,85 @@
+# NAMESPACE 
+Namespace is a way to divide cluster resources between multiple users, teams or environments. 
+
+# - Resource Quotas to enforce limits on number of resources (Pods, Services etc..) and amount of CPU/memory used within the Namespace
+# - LimitRange to enforce default resource requests and limits for containers
+# - If namespace is not specified, Kubernetes uses default
+
+# Built-in Namespaces:
+#   default: The default Namespace used when no Namespace is specified.
+#   kube-system: Namespace for resources created by Kubernetes itself (e.g., system components like the API server, controller manager, etc.).
+#   kube-public: A special Namespace that is readable by all users (including unauthenticated users), typically used for public resources.
+#   kube-node-lease: Namespace used for node lease objects to determine node health.
+
+# Not all resources are namespaced:
+#   - Nodes
+#   - PersistentVolumes 
+#   - ClusterRoles 
+
+--- 
+
+apiVersion: v1  # API version for Namespaces
+kind: Namespace  # Defines this resource as a Namespace
+metadata:
+  name: my-namespace  # Name of the Namespace
+  labels:             # Optional labels for organizing resources
+    environment: dev  # Example label to indicate environment type
+
+--- 
+
+# Resource Quota
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: my-quota
+  namespace: my-namespace  # Specifies which Namespace the quota applies to
+spec:
+  hard:
+    pods: "10"                # Limit the number of Pods
+    requests.cpu: "4"         # Total CPU requested cannot exceed 4 cores
+    requests.memory: "16Gi"   # Total memory requested cannot exceed 16Gi
+    limits.cpu: "8"           # Total CPU limit for all Pods cannot exceed 8 cores
+    limits.memory: "32Gi"     # Total memory limit for all Pods cannot exceed 32Gi
+
+
+# LimitRange
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: my-limit-range
+  namespace: my-namespace  # Specifies the Namespace
+spec:
+  limits:
+    - type: Container
+      default:
+        cpu: "500m"          # Default CPU limit per container
+        memory: "1Gi"        # Default memory limit per container
+      defaultRequest:
+        cpu: "250m"          # Default CPU request per container
+        memory: "512Mi"      # Default memory request per container
+
+
+# Namespace-scoped Roles
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: my-namespace  # Role is scoped to this Namespace
+  name: pod-reader          # Name of the Role
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "watch", "list"]  # Permissions to read Pods
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: read-pods-binding
+  namespace: my-namespace  # RoleBinding is scoped to this Namespace
+subjects:
+  - kind: User
+    name: jane              # User "jane" will be granted this role
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: pod-reader          # Reference to the Role
+  apiGroup: rbac.authorization.k8s.io

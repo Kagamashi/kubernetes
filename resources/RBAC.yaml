@@ -1,0 +1,89 @@
+Role
+# A Role grants access to specific resources (like Pods, Secrets, Services) within a single namespace.
+# A Role contains a list of rules that define allowed actions (verbs) on specific API resources (resources).
+
+apiVersion: rbac.authorization.k8s.io/v1  # API version for RBAC resources
+kind: Role                                # Defines this resource as a Role
+metadata:
+  namespace: my-namespace                 # Namespace where this Role applies
+  name: pod-reader-role                   # Name of the Role
+rules:                                    # Rules define the permissions granted by this Role
+- apiGroups: [""]                         # "" refers to the core API group (Pods, Services, etc.)
+  resources: ["pods"]                     # Resources this Role applies to (in this case, Pods)
+  verbs: ["get", "list", "watch"]         # Verbs define allowed actions (here: read-only access to Pods)
+
+# apiVersion: Specifies the RBAC API version, typically rbac.authorization.k8s.io/v1.
+# kind: Specifies this resource as a Role.
+# metadata.namespace: The namespace where this Role applies.
+# rules: The set of permissions that the Role grants. It includes:
+#   apiGroups: Specifies the API group for the resources. "" refers to the core Kubernetes API (e.g., Pods, Services).
+#   resources: Defines the resources this Role controls (e.g., pods, secrets).
+#   verbs: Specifies the allowed actions (e.g., get, list, watch, create, delete).
+
+---
+
+RoleBinding
+# A RoleBinding grants a Role to a user, group, or ServiceAccount within a namespace.
+# RoleBindings bind a Role to a subject (e.g., a user or ServiceAccount) and apply only within a specific namespace.
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding                       # Defines this resource as a RoleBinding
+metadata:
+  name: pod-reader-binding              # Name of the RoleBinding
+  namespace: my-namespace               # Namespace where this RoleBinding applies
+subjects:                               # The users, groups, or ServiceAccounts that receive the Role's permissions
+- kind: ServiceAccount                  # The kind of subject (ServiceAccount in this case)
+  name: my-service-account              # Name of the ServiceAccount to which the Role is bound
+  namespace: my-namespace               # Namespace of the ServiceAccount
+roleRef:                                # The Role being assigned to the subjects
+  kind: Role                            # The type of role (Role or ClusterRole)
+  name: pod-reader-role                 # Name of the Role to be granted
+  apiGroup: rbac.authorization.k8s.io   # API group for RBAC resources
+
+# subjects: Defines the entities (users, groups, or ServiceAccounts) that will receive the permissions specified by the Role.
+# roleRef: Refers to the Role that is being assigned to the subjects. This section contains:
+#   kind: The type of role (Role or ClusterRole).
+#   name: The name of the Role being bound.
+#   apiGroup: The API group for the Role (always rbac.authorization.k8s.io for RBAC resources).
+
+---
+
+ClusterRole
+# A ClusterRole is similar to a Role, but it applies at the cluster level or across multiple namespaces.
+# ClusterRoles are used for granting access to cluster-wide resources (like Nodes or PersistentVolumes) or across namespaces.
+# ClusterRoles can also be used in RoleBindings within a namespace to grant cluster-wide permissions.
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole                       # Defines this resource as a ClusterRole
+metadata:
+  name: cluster-admin-role              # Name of the ClusterRole
+rules:                                  # Rules define the permissions granted by this ClusterRole
+- apiGroups: [""]                       # "" refers to the core API group
+  resources: ["nodes", "pods"]          # Resources this ClusterRole applies to (cluster-wide resources)
+  verbs: ["get", "list", "watch", "delete"]  # Allowed actions (e.g., delete nodes and pods)
+
+# kind: ClusterRole: Specifies this resource as a ClusterRole, which can be applied to cluster-wide resources (e.g., Nodes, PersistentVolumes) or used across multiple namespaces.
+# rules: Similar to the Role, but this applies to cluster-wide resources or permissions across namespaces.
+
+---
+
+ClusterRoleBinding
+# A ClusterRoleBinding grants a ClusterRole to a user, group, or ServiceAccount at the cluster level.
+# ClusterRoleBindings allow cluster-wide permissions for subjects, meaning the permissions apply to all namespaces or cluster-wide resources.
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding               # Defines this resource as a ClusterRoleBinding
+metadata:
+  name: cluster-admin-binding          # Name of the ClusterRoleBinding
+subjects:                              # Users, groups, or ServiceAccounts receiving the permissions
+- kind: User                           # The kind of subject (User, Group, or ServiceAccount)
+  name: jane                           # Username receiving cluster-wide permissions
+  apiGroup: rbac.authorization.k8s.io  # API group for RBAC
+roleRef:                               # Reference to the ClusterRole
+  kind: ClusterRole                    # The type of role being bound (Role or ClusterRole)
+  name: cluster-admin-role             # Name of the ClusterRole to be granted
+  apiGroup: rbac.authorization.k8s.io  # API group for RBAC resources
+
+# subjects: Specifies the users, groups, or ServiceAccounts that receive the permissions granted by the ClusterRole.
+# roleRef: Refers to the ClusterRole being assigned to the subjects. This allows granting of cluster-wide permissions or permissions across namespaces.
+
