@@ -2,7 +2,7 @@
 # Add or update labels on a resource. Labels are key-value pairs used for selecting and grouping resources.
 
 # Usage:
-kubectl label <resource-type> <resource-name> <label-key>=<value>
+kubectl label [resource-type] [resource-name] [label-key]=[value]
 
 # Example:
 kubectl label pod my-pod app=frontend
