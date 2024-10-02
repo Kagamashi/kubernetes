@@ -1,12 +1,15 @@
 # kubectl describe
-# Display detailed information about a resource or group of resources, including events, labels, and conditions.
+# Show detailed information about a resource, including its configuration, status, events, and conditions.
 
 # Usage:
 kubectl describe [resource-type] [resource-name]
 
-# Example:
+# Example (describe a Pod):
 kubectl describe pod my-pod
 
+# Example (describe a Node):
+kubectl describe node my-node
+
 # Tips:
-# - Very useful for debugging, especially when looking for events or conditions like `ImagePullBackOff` or `CrashLoopBackOff`.
-# - Combine with `kubectl get events` to get more context for issues.
+# - Use `kubectl describe` to inspect in-depth information about resources and identify problems like scheduling issues, event errors, or image pull failures.
+# - The events section is particularly useful for troubleshooting Pods stuck in `Pending`, `CrashLoopBackOff`, or `ImagePullBackOff` states.
