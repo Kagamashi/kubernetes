@@ -2,7 +2,7 @@
 # Apply a configuration to a resource by filename or stdin. This is often used to create or update resources declaratively.
 
 # Usage:
-kubectl apply -f <file>
+kubectl apply -f [file]
 
 # Example:
 kubectl apply -f deployment.yaml
