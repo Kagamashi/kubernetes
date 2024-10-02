@@ -2,7 +2,7 @@
 # Replace a resource by filename or stdin. This command is used to update a resource entirely by replacing its specification.
 
 # Usage:
-kubectl replace -f <file>
+kubectl replace -f [file]
 
 # Example:
 kubectl replace -f updated-deployment.yaml
