@@ -2,7 +2,7 @@
 # Edit a resource on the server directly, opens the resource in your default text editor.
 
 # Usage:
-kubectl edit <resource-type> <resource-name>
+kubectl edit [resource-type] [resource-name]
 
 # Example:
 kubectl edit deployment my-deployment
