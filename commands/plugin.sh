@@ -2,7 +2,7 @@
 # Manage and interact with kubectl plugins. Plugins extend the functionality of kubectl.
 
 # Usage:
-kubectl plugin <subcommand>
+kubectl plugin [subcommand]
 
 # Example (list plugins):
 kubectl plugin list
