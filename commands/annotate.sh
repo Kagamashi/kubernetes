@@ -2,7 +2,7 @@
 # Adds or updates the annotations on a resource.
 
 # Usage:
-kubectl annotate <resource-type> <resource-name> <annotation-key>=<value>
+kubectl annotate [resource-type] [resource-name] [annotation-key]=[value]
 
 # Example:
 kubectl annotate pod my-pod description="This is my pod"
