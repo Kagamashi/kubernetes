@@ -2,7 +2,7 @@
 # Scale a Deployment, ReplicaSet, or StatefulSet by adjusting the number of replicas.
 
 # Usage:
-kubectl scale <resource-type>/<resource-name> --replicas=<number>
+kubectl scale [resource-type]/[resource-name] --replicas=[number]
 
 # Example:
 kubectl scale deployment/my-deployment --replicas=5
