@@ -2,7 +2,7 @@
 # Display detailed information about a resource or group of resources, including events, labels, and conditions.
 
 # Usage:
-kubectl describe <resource-type> <resource-name>
+kubectl describe [resource-type] [resource-name]
 
 # Example:
 kubectl describe pod my-pod
