@@ -12,3 +12,17 @@ kubectl get nodes -o='custom-columns=NodeName:.metadata.name,TaintKey:.spec.tain
 
 # If a taint with that key and effect already exists, its value is replaced as specified.
 kubectl taint nodes foo dedicated=special-user:NoSchedule
+
+
+kubeclt cordon/uncordon
+# - Use `kubectl cordon` to prepare a node for maintenance, ensuring that no new Pods will be scheduled on the node.
+# - Combine with `kubectl drain` to safely evict existing Pods for maintenance.
+
+kubectl drain [node-name] --ignore-daemonsets --delete-emptydir-data
+# - `kubectl drain` is useful for safely removing all Pods before performing maintenance or upgrades on the node.
+# - Always use `--ignore-daemonsets`, as DaemonSet Pods are managed independently and should not be drained.
+
+kubectl taint nodes [node-name] [key]=[value]:[effect]
+# Tips:
+# - Taints and tolerations are powerful tools to control Pod placement. Use them to reserve nodes for specific workloads or to prevent Pods from being scheduled on specific nodes.
+# - The main effects are `NoSchedule`, `NoExecute`, and `PreferNoSchedule`, which determine how Pods are treated on tainted nodes.
