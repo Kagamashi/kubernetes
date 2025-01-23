@@ -1,8 +1,5 @@
-# kubectl autoscale
 # Automatically scale the number of Pods in a Deployment, ReplicaSet, or StatefulSet based on observed resource usage (CPU/memory).
 # It creates a Horizontal Pod Autoscaler (HPA).
-
-# Usage:
 kubectl autoscale [resource-type]/[resource-name] --min=[min-replicas] --max=[max-replicas] --cpu-percent=[target-percentage]
 
 # Example (scale a deployment based on CPU usage):
