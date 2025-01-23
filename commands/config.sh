@@ -1,20 +1,45 @@
-# kubectl config
 # Manage kubeconfig files that define how to connect to clusters, users, and contexts.
-
-# Usage:
 kubectl config [subcommand]
 
-# Example (set a context):
-kubectl config use-context my-cluster
 
-# Useful Subcommands:
-# - `kubectl config get-contexts`: List available contexts in your kubeconfig.
-# - `kubectl config use-context`: Switch between contexts.
-# - `kubectl config view`: Show details of your kubeconfig file.
+kubectl config view # Show Merged kubeconfig settings.
 
-# Tips:
-# - Use `kubectl config use-context` to easily switch between different clusters or environments.
-# - `kubectl config set-context` allows you to modify or create new contexts in your kubeconfig file.
+# use multiple kubeconfig files at the same time and view merged config
+KUBECONFIG=~/.kube/config:~/.kube/kubconfig2
 
-# View context of aws user
-kubectl config view --kubeconfig=my-kube-config -o jsonpath="{.contexts[?(@.context.user=='aws-user')].name}" > /opt/outputs/aws-context-name
+# Show merged kubeconfig settings and raw certificate data and exposed secrets
+kubectl config view --raw 
+
+# get the password for the e2e user
+kubectl config view -o jsonpath='{.users[?(@.name == "e2e")].user.password}'
+
+# get the certificate for the e2e user
+kubectl config view --raw -o jsonpath='{.users[?(.name == "e2e")].user.client-certificate-data}' | base64 -d
+
+kubectl config view -o jsonpath='{.users[].name}'    # display the first user
+kubectl config view -o jsonpath='{.users[*].name}'   # get a list of users
+kubectl config get-contexts                          # display list of contexts
+kubectl config get-contexts -o name                  # get all context names
+kubectl config current-context                       # display the current-context
+kubectl config use-context my-cluster-name           # set the default context to my-cluster-name
+
+kubectl config set-cluster my-cluster-name           # set a cluster entry in the kubeconfig
+
+# configure the URL to a proxy server to use for requests made by this client in the kubeconfig
+kubectl config set-cluster my-cluster-name --proxy-url=my-proxy-url
+
+# add a new user to your kubeconf that supports basic auth
+kubectl config set-credentials kubeuser/foo.kubernetes.com --username=kubeuser --password=kubepassword
+
+# permanently save the namespace for all subsequent kubectl commands in that context.
+kubectl config set-context --current --namespace=ggckad-s2
+
+# set a context utilizing a specific username and namespace.
+kubectl config set-context gce --user=cluster-admin --namespace=foo \
+  && kubectl config use-context gce
+
+kubectl config unset users.foo                       # delete user foo
+
+# short alias to set/show context/namespace (only works for bash and bash-compatible shells, current context to be set before using kn to set namespace)
+alias kx='f() { [ "$1" ] && kubectl config use-context $1 || kubectl config current-context ; } ; f'
+alias kn='f() { [ "$1" ] && kubectl config set-context --current --namespace $1 || kubectl config view --minify | grep namespace | cut -d" " -f6 ; } ; f'
