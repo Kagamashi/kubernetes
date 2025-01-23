@@ -57,3 +57,13 @@ kubectl -n my-ns delete pod,svc --all                             # Delete all p
 
 # Delete all pods matching the awk pattern1 or pattern2
 kubectl get pods  -n mynamespace --no-headers=true | awk '/pattern1|pattern2/{print $1}' | xargs  kubectl delete -n mynamespace pod
+
+
+# EDITING
+# Edit a resource on the server directly, opens the resource in your default text editor.
+kubectl edit [resource-type] [resource-name]
+# --record: Record the command in the resource's annotations (good for auditing).
+kubectl edit deployment my-deployment --record
+
+kubectl edit svc/docker-registry                      # Edit the service named docker-registry
+KUBE_EDITOR="nano" kubectl edit svc/docker-registry   # Use an alternative editor
