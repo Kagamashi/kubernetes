@@ -6,3 +6,7 @@ kubectl port-forward svc/my-service 5000:my-service-port  # listen on local port
 
 kubectl port-forward deploy/my-deployment 5000:6000       # listen on local port 5000 and forward to port 6000 on a Pod created by <my-deployment>
 kubectl exec deploy/my-deployment -- ls                   # run command in first Pod and first container in Deployment (single- or multi-container cases)
+
+
+# Forward one or more local ports to a Pod. Useful for accessing applications running in the cluster without exposing them through a Service.
+kubectl port-forward [pod-name] [local-port]:[pod-port]
