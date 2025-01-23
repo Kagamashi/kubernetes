@@ -101,3 +101,7 @@ for pod in $(kubectl get po --output=jsonpath={.items..metadata.name}); do echo 
 
 # Get a deployment's status subresource
 kubectl get deployment nginx-deployment --subresource=status
+
+
+# Show detailed information about a resource, including its configuration, status, events, and conditions.
+kubectl describe [resource-type] [resource-name]
