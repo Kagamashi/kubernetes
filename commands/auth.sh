@@ -1,12 +1,9 @@
-# kubectl auth
 # Inspect and verify authentication and authorization in the Kubernetes cluster. This is particularly useful for RBAC troubleshooting.
-
-# Usage:
 kubectl auth [subcommand]
 
 # Subcommands:
-# - can-i: Check whether the current user has permission to perform a specific action.
-# - reconcile: Ensure that RBAC roles and bindings match the current cluster state.
+# - can-i:      Check whether the current user has permission to perform a specific action.
+# - reconcile:  Ensure that RBAC roles and bindings match the current cluster state.
 kubectl auth can-i create pods
 kubectl auth reconcile -f rbac-config.yaml
 
