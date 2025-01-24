@@ -1,37 +1,52 @@
 ## Pod Security Admission (PSA)
-PSA is the recommended mechanism for enforcing Pod security standards.
-It provides security profiles that can be applied at namespace level ensuring that Pods in this namespace meet certain security requirements.
 
-Key features:
-1. PROFILES
-    - Privileges: Allow all capabilities and provides minimal restrictions.
-      Suitable for trusted workloads that require high privileges.
-        > :>
-    - Baseline: Provides moderate restrictions, suitable for general-purpose workloads. 
-        > restricts use of HostNetwork and HostPID (prevents Pods from accessing underlying host's network or process namespaces)
-        > restricts access to host paths, limiting the ability to mount host directories into containers
-    - Restricted: Enforces most stringent security controls, ideal for highly sensitive workloads. 
-        > enforces use of non-root containers by default
-        > restricts use of HostNetwork and HostPID (prevents Pods from accessing underlying host's network or process namespaces)
-        > restricts access to host paths, limiting the ability to mount host directories into containers
-2. NAMESPACE-LEVEL ENFORCEMENT
-    - Profiles are applied at namespace level
-    - All pods in the namespace must conform to the selected profile
-3. VALIDATION ENFORCE MODES
-    - Audit: Logs violations but does not block the Pod
-    - Warn: Provides warning but allows Pod to run
-    - Enforce: Blocks the creation of Pods that violate the policy
+Pod Security Admission (PSA) is the recommended mechanism for enforcing Pod security standards in Kubernetes. It provides **security profiles** that can be applied at the namespace level, ensuring that Pods in this namespace meet specific security requirements.
 
-PSA Profiles can be enforced on namespace by applying labels
-pod-security.kubernetes.io/[ENFORCE_MODE]=[PROFILE]
+### **Key Features**:
 
-# Apply the restricted security profile to a namespace
-kubectl label namespace my-namespace pod-security.kubernetes.io/enforce=restricted
+#### 1. **Profiles**
+- **Privileges**:
+  - Allows all capabilities and provides minimal restrictions.
+  - Suitable for trusted workloads that require high privileges.
 
-# Enable warnings for baseline profile violations
-kubectl label namespace my-namespace pod-security.kubernetes.io/warn=baseline
+- **Baseline**:
+  - Provides moderate restrictions, suitable for general-purpose workloads.
+  - Restricts the use of `HostNetwork` and `HostPID` to prevent Pods from accessing the underlying host's network or process namespaces.
+  - Limits access to host paths, reducing the ability to mount host directories into containers.
 
-# Enable auditing for privileged profile violations
-kubectl label namespace my-namespace pod-security.kubernetes.io/audit=privileged
+- **Restricted**:
+  - Enforces the most stringent security controls, ideal for highly sensitive workloads.
+  - Requires the use of non-root containers by default.
+  - Restricts access to `HostNetwork`, `HostPID`, and host paths, ensuring maximum isolation.
+
+#### 2. **Namespace-Level Enforcement**
+- Profiles are applied at the **namespace level**.
+- All Pods in the namespace must conform to the selected profile.
+
+#### 3. **Validation Modes**
+- **Audit**: Logs violations but does not block the Pod.
+- **Warn**: Provides warnings but allows the Pod to run.
+- **Enforce**: Blocks the creation of Pods that violate the policy.
+
+### **Applying PSA Profiles**
+PSA profiles can be enforced on a namespace by applying specific labels:
+
+- Apply the restricted security profile to a namespace:
+  ```bash
+  kubectl label namespace my-namespace pod-security.kubernetes.io/enforce=restricted
+  ```
+
+- Enable warnings for baseline profile violations:
+  ```bash
+  kubectl label namespace my-namespace pod-security.kubernetes.io/warn=baseline
+  ```
+
+- Enable auditing for privileged profile violations:
+  ```bash
+  kubectl label namespace my-namespace pod-security.kubernetes.io/audit=privileged
+  ```
 
 ---
+
+By leveraging Kubernetes scaling features (HPA, VPA, Cluster Autoscaler) and Pod Security Admission (PSA), clusters can achieve high performance and security while adapting to varying workloads.
+
