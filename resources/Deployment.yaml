@@ -1,5 +1,5 @@
-# DEPLOYMENT
-Deployment provide declarative updates to applications, handling the scaling and rollout of new version as well as rollback functionality.
+# Deployment
+# Provide declarative updates to applications, handling the scaling and rollout of new version as well as rollback functionality.
 
 # - Declarative Updates - we describe desired state and Kubernetes makes the cluster conform to that state 
 # - Rolling Updates and Rollbacks 
@@ -14,30 +14,26 @@ Deployment provide declarative updates to applications, handling the scaling and
 
 --- 
 
-apiVersion: apps/v1  # API version for Deployments (apps/v1 is stable)
-kind: Deployment     # Defines this resource as a Deployment
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: my-deployment  # Name of the Deployment
+  name: my-deployment
   labels:              # Labels for organizing and selecting resources
     app: my-app
     tier: backend
-
 spec:
   replicas: 3           # Number of desired replicas (Pods)
   selector:             # Pod selector; defines which Pods belong to this Deployment
     matchLabels:
       app: my-app
-
   strategy:             # Defines the update strategy for the Deployment
     type: RollingUpdate  # Type of update: RollingUpdate (default) or Recreate
     rollingUpdate:
       maxUnavailable: 25%  # Maximum number of Pods that can be unavailable during the update
       maxSurge: 1          # Maximum number of extra Pods that can be created during the update
-
   minReadySeconds: 10     # Minimum time a Pod should be ready before being considered available
   revisionHistoryLimit: 10 # How many old ReplicaSets to retain for rollback purposes
   progressDeadlineSeconds: 600  # Time in seconds to wait for the deployment to be successful
-
   template:              # The Pod template; defines how the Pods are created
     metadata:
       labels:            # Labels that will be applied to the Pods created by this Deployment
@@ -87,8 +83,6 @@ spec:
 
       restartPolicy: Always         # Pod restart policy (Always, OnFailure, Never)
       terminationGracePeriodSeconds: 30  # Time given for a container to gracefully shut down
-
-  # Pausing the Deployment (optional)
   paused: false  # Set to true if you want to pause the Deployment (e.g., to stop further rollouts temporarily)
 
 --- 
