@@ -1,6 +1,6 @@
-# STORAGE CLASS 
-SotrageClass is an API resource used to define different types or "classes" of storage that administrators provide in Kubernetes cluster.
-It allows for dynamic provisioning of storage when PVC requests it, based o defined parameters such as storage type, performance tier, backup policies.
+# StorageClass
+# API resource used to define different types or "classes" of storage that administrators provide in Kubernetes cluster.
+# It allows for dynamic provisioning of storage when PVC requests it, based on defined parameters such as storage type, performance tier, backup policies.
 
 # Key features: 
 #   - AllowVolumeExpansion: allows dynamically provisioned volumes to be resized 
@@ -15,24 +15,24 @@ It allows for dynamic provisioning of storage when PVC requests it, based o defi
 #   Ceph RBD: kubernetes.io/rbd
 
 # Volume binding mode: 
-#   - Immediate: PV is provisioned and bound to PVC as soon as PVC is created (default mode)
+#   - Immediate:            PV is provisioned and bound to PVC as soon as PVC is created (default mode)
 #   - WaitForFirstConsumer: PV is provisioned and bound to the PVC only when a Pod that uses the PVC is scheduled.
 
 # Reclaim Policy: What happens when PV is released
-#   - Retain: PV is not deleted and remains in the cluster 
-#   - Delete: PV is deleted along with the data it contains 
+#   - Retain:  PV is not deleted and remains in the cluster 
+#   - Delete:  PV is deleted along with the data it contains 
 #   - Recycle: PV is wiped and made available for future use 
 
 ---
 
-apiVersion: storage.k8s.io/v1  # API version for StorageClass
-kind: StorageClass             # Defines this resource as a StorageClass
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
 metadata:
-  name: fast-storage           # Name of the StorageClass
+  name: fast-storage    
 provisioner: kubernetes.io/aws-ebs  # The provisioner used for dynamic provisioning (AWS EBS in this case)
 parameters:
-  type: gp2                    # AWS EBS volume type (e.g., gp2 for General Purpose SSD)
-  fsType: ext4                 # Filesystem type for the volume (e.g., ext4)
+  type: gp2                     # AWS EBS volume type (e.g., gp2 for General Purpose SSD)
+  fsType: ext4                  # Filesystem type for the volume (e.g., ext4)
 reclaimPolicy: Delete           # Reclaim policy (Delete, Retain, Recycle)
 allowVolumeExpansion: true      # Allows the PV to be resized dynamically
 volumeBindingMode: Immediate    # Bind the volume immediately when the PVC is created
@@ -80,7 +80,3 @@ spec:
     requests:
       storage: 50Gi                  # Requesting 50Gi of storage
   storageClassName: fast-storage     # Reference to the StorageClass
-
-
-
-
