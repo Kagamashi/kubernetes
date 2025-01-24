@@ -1,52 +1,43 @@
-# CRON JOB
-CronJob is used to run Jobs on a schedule 
-Useful for performing tasks periodically:
-backups, database cleanup, sending reports 
+# CronJob
+# Used to run Jobs on a schedule 
+# Useful for performing tasks periodically: backups, database cleanup, sending reports 
 
 # Key features:
 #   - Schedule: cron-like syntax 
 #   - Job Management: every time CronJob triggers it creates regular Kubernetes Job that runs the task to completion 
 #   - Automatic Job Cleanup: successfulJobsHistoryLimit and failedJobsHistoryLimit 
 
-* * * * *
-| | | | |
-| | | | +--- Day of the week (0 - 7) (Sunday to Saturday)
-| | | +----- Month (1 - 12)
-| | +------- Day of the month (1 - 31)
-| +--------- Hour (0 - 23)
-+----------- Minute (0 - 59)
+# * * * * *
+# | | | | |
+# | | | | +--- Day of the week (0 - 7) (Sunday to Saturday)
+# | | | +----- Month (1 - 12)
+# | | +------- Day of the month (1 - 31)
+# | +--------- Hour (0 - 23)
+# +----------- Minute (0 - 59)
 
-# For example:
 #   */5 * * * *: Run every 5 minutes.
-#   0 0 * * *: Run at midnight every day.
-#   0 9 * * 1: Run at 9:00 AM every Monday.
+#   0 0 * * *:   Run at midnight every day.
+#   0 9 * * 1:   Run at 9:00 AM every Monday.
 
 # Concurrency policies:
 #   - Allow (default): run multiple Jobs concurrently, if previous Job is still running it might result in overlapping executions
-#   - Forbid: prevents concurrent executions, if previous Job is still running new one is Skipped
-#   - Replace: running Job is terminated and new one is started 
+#   - Forbid:          prevents concurrent executions, if previous Job is still running new one is Skipped
+#   - Replace:         running Job is terminated and new one is started 
 
 --- 
 
 apiVersion: batch/v1
-kind: CronJob        # Defines this resource as a CronJob
+kind: CronJob       
 metadata:
-  name: my-cronjob   # Name of the CronJob
+  name: my-cronjob 
   labels:
     app: cron-job-example
-
 spec:
   schedule: "*/5 * * * *"  # Cron expression to run the Job every 5 minutes
-
-  # Concurrency policy can be Allow (default), Forbid, or Replace
-  concurrencyPolicy: Forbid  # Prevents new Jobs from starting if the previous Job is still running
-
-  # Specifies how many successful and failed Jobs should be retained
+  concurrencyPolicy: Forbid  # Can be Allow (default), Forbid, or Replace
   successfulJobsHistoryLimit: 3  # Keep the last 3 successful Jobs
   failedJobsHistoryLimit: 1      # Keep only the last failed Job
-
-  # Job Template (same structure as a Job)
-  jobTemplate:
+  jobTemplate:  # (same structure as a Job)
     spec:
       template:
         metadata:
@@ -55,7 +46,7 @@ spec:
         spec:
           containers:
             - name: cronjob-container
-              image: busybox            # Using busybox as an example
+              image: busybox             # Using busybox as an example
               args:
                 - /bin/sh
                 - -c
@@ -68,9 +59,6 @@ spec:
 # metadata: Contains the name of the CronJob and optional labels for organizing and selecting resources.
 # spec.schedule: The schedule for the CronJob, defined using cron syntax. In this example, the Job runs every 5 minutes (*/5 * * * *).
 # spec.concurrencyPolicy: Defines how to handle concurrent Jobs. The options are:
-#   Allow (default): Allows concurrent Jobs to run if the previous Job hasn’t finished.
-#   Forbid: Prevents new Jobs from starting if the previous Job is still running.
-#   Replace: Cancels the currently running Job if a new one starts.
 # spec.successfulJobsHistoryLimit and failedJobsHistoryLimit: Define how many successful or failed Job records to retain for troubleshooting or review. In this example, the last 3 successful Jobs and the last failed Job are kept.
 # jobTemplate: Defines the Job template, which specifies the task to run, the container image, and other Pod settings. This template is the same as for a regular Job, including:
 #   containers: The container that runs the task, with the image, command, and arguments.
