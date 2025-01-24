@@ -1,17 +1,12 @@
-# JOB
-Job is used to manage and run one-off tasks or batch processing that runs to completion; unlike long-running services managed by for example Deployments.
-Jobs ensure that a specified number of Pods run succesfully to complete the task.
+# Job
+# Used to manage and run one-off tasks or batch processing that runs to completion; unlike long-running services managed by for example Deployments.
+# Jobs ensure that a specified number of Pods run succesfully to complete the task.
 
 # Key features:
 #   - Run-to-Completion: Job run until they complete their task and then terminate 
 #   - Pod Retry: Jobs automatically retry failed Pods 
 #   - Parallelism: Jobs can run multiple Pods in parallel 
 #   - Completion rules: certain number of successful completions or retries 
-
-# Types of Jobs:
-#   - Single Job: executes a task once until completion 
-#   - Parallel Jobs: executes multiple Pods in parallel to complete the task more efficiently
-#   - Completions: Jobs can require multiple completions, set number of successful Pods must complete before Job is considered done 
 
 # Use cases:
 #   - Data Processing: running ETL (Extract, Transform, Load) processes, batch data processes, analytics tasks 
@@ -20,10 +15,10 @@ Jobs ensure that a specified number of Pods run succesfully to complete the task
 
 ---
 
-apiVersion: batch/v1  # API version for Jobs
-kind: Job             # Defines this resource as a Job
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: my-job        # Name of the Job
+  name: my-job
   labels:
     app: my-batch-job
 
