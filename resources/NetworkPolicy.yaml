@@ -1,6 +1,6 @@
-# NETWORK POLICY
-NetworkPolicy controls network traffic allowed to and from Pods.
-NetworkPolicies defines rules for ingress (incoming) and egress (outgoing) traffic to Pods based on labels, namespaces, IP addresses.
+# NetworkPolicy
+# Controls network traffic allowed to and from Pods.
+# NetworkPolicies defines rules for ingress (incoming) and egress (outgoing) traffic to Pods based on labels, namespaces, IP addresses.
 
 # Key features:
 #   - Label-based rules: NetworkPolicies apply rules based on Pod labels 
@@ -17,20 +17,18 @@ NetworkPolicies defines rules for ingress (incoming) and egress (outgoing) traff
 
 --- 
 
-apiVersion: networking.k8s.io/v1  # API version for NetworkPolicy
-kind: NetworkPolicy               # Defines this resource as a NetworkPolicy
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy         
 metadata:
-  name: allow-same-namespace       # Name of the NetworkPolicy
+  name: allow-same-namespace
   namespace: my-namespace          # Namespace to which this policy applies
 spec:
   podSelector:                     # Selects the Pods this policy applies to (based on labels)
     matchLabels:
       app: my-app
-
   policyTypes:
   - Ingress                        # This policy controls ingress (incoming) traffic
   - Egress                         # This policy controls egress (outgoing) traffic
-
   ingress:                         # Rules for incoming traffic
   - from:
     - podSelector:                 # Allow traffic only from Pods with matching labels
@@ -39,7 +37,6 @@ spec:
     ports:
     - protocol: TCP
       port: 80                     # Only allow traffic to port 80
-
   egress:                          # Rules for outgoing traffic
   - to:
     - podSelector:                 # Allow outgoing traffic to Pods with matching labels
@@ -71,7 +68,7 @@ metadata:
 spec:
   podSelector: {}      # Select all Pods in the namespace
   policyTypes:
-  - Ingress            # Deny all ingress traffic
+  - Ingress            # Deny all incoming traffic
 
 
 # Allow Ingress from Specific Namespace
