@@ -1,6 +1,6 @@
-Role
-# A Role grants access to specific resources (like Pods, Secrets, Services) within a single namespace.
-# A Role contains a list of rules that define allowed actions (verbs) on specific API resources (resources).
+# Role
+# Grants access to specific resources (like Pods, Secrets, Services) within a single namespace.
+# Role contains a list of rules that define allowed actions (verbs) on specific API resources (resources).
 
 apiVersion: rbac.authorization.k8s.io/v1  # API version for RBAC resources
 kind: Role                                # Defines this resource as a Role
@@ -22,8 +22,8 @@ rules:                                    # Rules define the permissions granted
 
 ---
 
-RoleBinding
-# A RoleBinding grants a Role to a user, group, or ServiceAccount within a namespace.
+# RoleBinding
+# Grants a Role to a user, group, or ServiceAccount within a namespace.
 # RoleBindings bind a Role to a subject (e.g., a user or ServiceAccount) and apply only within a specific namespace.
 
 apiVersion: rbac.authorization.k8s.io/v1
@@ -48,8 +48,8 @@ roleRef:                                # The Role being assigned to the subject
 
 ---
 
-ClusterRole
-# A ClusterRole is similar to a Role, but it applies at the cluster level or across multiple namespaces.
+# ClusterRole
+# Similar to a Role, but it applies at the cluster level or across multiple namespaces.
 # ClusterRoles are used for granting access to cluster-wide resources (like Nodes or PersistentVolumes) or across namespaces.
 # ClusterRoles can also be used in RoleBindings within a namespace to grant cluster-wide permissions.
 
@@ -67,8 +67,8 @@ rules:                                  # Rules define the permissions granted b
 
 ---
 
-ClusterRoleBinding
-# A ClusterRoleBinding grants a ClusterRole to a user, group, or ServiceAccount at the cluster level.
+# ClusterRoleBinding
+# Grants a ClusterRole to a user, group, or ServiceAccount at the cluster level.
 # ClusterRoleBindings allow cluster-wide permissions for subjects, meaning the permissions apply to all namespaces or cluster-wide resources.
 
 apiVersion: rbac.authorization.k8s.io/v1
@@ -86,4 +86,3 @@ roleRef:                               # Reference to the ClusterRole
 
 # subjects: Specifies the users, groups, or ServiceAccounts that receive the permissions granted by the ClusterRole.
 # roleRef: Refers to the ClusterRole being assigned to the subjects. This allows granting of cluster-wide permissions or permissions across namespaces.
-
