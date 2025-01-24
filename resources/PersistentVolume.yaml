@@ -1,27 +1,27 @@
-# PERSISTENT VOLUME
-Persistent Volume is a piece of storage in cluster that has been provisioned by an administrator or dynamically by Kubernetes using StorageClass. 
-Provide a way to store data outside the lifecycle of a Pod. 
+# PersistentVolume
+# Piece of storage in cluster that has been provisioned by an administrator or dynamically by Kubernetes using StorageClass. 
+# Provide a way to store data outside the lifecycle of a Pod. 
 
 # - Provisioned manually by cluster admin 
 # - Provisioned dynaically using StorageClass 
 # - PVs supports various types of storage backends: NFS, iSCSI, AWS EBS, Google Cloud Persistent Disks, Azure Disks... 
 
 # Reclaim Policy: What happens when PV is released
-#   - Retain: PV is not deleted and remains in the cluster 
-#   - Delete: PV is deleted along with the data it contains 
+#   - Retain:  PV is not deleted and remains in the cluster 
+#   - Delete:  PV is deleted along with the data it contains 
 #   - Recycle: PV is wiped and made available for future use 
 
 # Access Modes: 
-#   - ReadWriteOnce (RWO): The volume can be mounted as read-write by a single node.
-#   - ReadOnlyMany (ROX): The volume can be mounted as read-only by many nodes.
-#   - ReadWriteMany (RWX): The volume can be mounted as read-write by many nodes.
+#   - ReadWriteOnce (RWO): can be mounted as read-write by a single node.
+#   - ReadOnlyMany  (ROX): can be mounted as read-only by many nodes.
+#   - ReadWriteMany (RWX): can be mounted as read-write by many nodes.
 
 --- 
 
 apiVersion: v1
-kind: PersistentVolume  # Defines this resource as a PersistentVolume
+kind: PersistentVolume
 metadata:
-  name: my-pv           # Name of the PersistentVolume
+  name: my-pv
 spec:
   capacity:
     storage: 10Gi       # The size of the storage
@@ -43,3 +43,32 @@ spec:
 # spec.persistentVolumeReclaimPolicy: Defines the behavior when the PVC is deleted. Options include Retain, Delete, and Recycle.
 # spec.storageClassName: Defines the StorageClass associated with the PV. This can be used to dynamically provision storage or to classify storage based on performance, backup policies, etc.
 # spec.nfs: This specifies the NFS backend details, such as the NFS server IP and the path to the directory.
+
+--- 
+
+# PersistentVolumeClaim
+# Request for storage by a user.
+# PVC specifies the size and access mode required for the storage. 
+# Kubernetes then bind the PVC to suitable PV that satisfies the request. 
+
+--- 
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-pvc             
+spec:
+  accessModes:
+    - ReadWriteOnce          # Access mode requested for the PVC
+  resources:
+    requests:
+      storage: 5Gi           # Amount of storage requested
+  storageClassName: manual   # The StorageClass for dynamic provisioning or matching with a PV
+
+--- 
+
+# apiVersion and kind: The API version is v1, and the resource type is PersistentVolumeClaim.
+# metadata: Contains the name of the PersistentVolumeClaim (my-pvc).
+# spec.accessModes: Defines how the storage will be accessed. In this case, it is ReadWriteOnce, meaning the storage can be mounted as read-write by a single node.
+# spec.resources.requests.storage: Specifies the amount of storage requested (e.g., 5Gi).
+# spec.storageClassName: Specifies the StorageClass for dynamic provisioning or to bind to a PV that has the same StorageClass.
