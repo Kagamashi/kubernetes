@@ -1,11 +1,11 @@
-# INGRESS
-Ingress is an API object that manages external access to services within a cluster, typically HTTP and HTTPS traffic.
-Ingress allows to define rules for routing traffic based on hostnames or paths and also can handle SSL/TLS termination.
-Acts as gateway that sits between external traffic and internal services - providing feature-rich alternative to Services like NodePort or LoadBalancer.
+# Ingress
+# API object that manages external access to services within a cluster, typically HTTP and HTTPS traffic.
+# Ingress allows to define rules for routing traffic based on hostnames or paths and also can handle SSL/TLS termination.
+# Acts as gateway that sits between external traffic and internal services - providing feature-rich alternative to Services like NodePort or LoadBalancer.
 
 # Key features:
 #   - HTTP and HTTPS routing 
-#   - Single centralized entry point for multiple services 
+#   - single centralized entry point for multiple services 
 #   - Path-based routing: traffic can be routed based on URL (e.g. /app1 and /app2) allowing multiple services to be hosted on the same domain 
 #   - Host-based routing: route traffic to different services based on requested hostname 
 #   - built-in load balancing for HTTP and HTTPS traffic to backend services 
@@ -37,26 +37,27 @@ Acts as gateway that sits between external traffic and internal services - provi
 
 ---
 
-apiVersion: networking.k8s.io/v1  # API version for Ingress
-kind: Ingress                      # Defines this resource as an Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress                     
 metadata:
   name: example-ingress            # Name of the Ingress
   namespace: my-namespace          # Namespace for the Ingress
   annotations:                     # Optional annotations for Ingress controller behavior
-    nginx.ingress.kubernetes.io/rewrite-target: /
-
+    nginx.ingress.kubernetes.io/rewrite-target: /             # allows to rewrite the incoming URL to different path in backend service
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"    # redirect all HTTP traffic to HTTPS
+    nginx.ingress.kubernetes.io/custom-http-errors: "404,500,503"  # serve custom error pages for HTTP status codes
 spec:
   rules:
   - host: example.com              # Hostname to route traffic (e.g., example.com)
     http:
       paths:
       - path: /                    # URL path to match for routing traffic
-        pathType: Prefix            # Type of path matching (Prefix or Exact)
+        pathType: Prefix           # Type of path matching (Prefix or Exact)
         backend:
           service:
-            name: my-service        # Name of the Service to route traffic to
+            name: my-service       # Name of the Service to route traffic to
             port:
-              number: 80            # Port on the Service to route traffic to
+              number: 80           # Port on the Service to route traffic to
 
 ---
 
@@ -69,17 +70,6 @@ spec:
 
 --- 
 
-# ANNOTATIONS (NGINX example)
-# Rewrite Target: allows to rewrite the incoming URL to different path in backend service
-nginx.ingress.kubernetes.io/rewrite-target: /
-
-# Force SSL/TLS Redirection: redirect all HTTP traffic to HTTPS
-nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-
-# Custom Error Pages: serve custom error pages for HTTP status codes
-nginx.ingress.kubernetes.io/custom-http-errors: "404,500,503"
-
-
 # Example of Ingress with TLS Termination
 # TLS enabled for example.com hostname using TLS secret; traffic is routed to backend service over port 443
 apiVersion: networking.k8s.io/v1
@@ -90,9 +80,8 @@ metadata:
 spec:
   tls:
   - hosts:
-    - example.com                  # Domain name for TLS
+    - example.com                   # Domain name for TLS
     secretName: tls-secret          # Kubernetes Secret containing the TLS certificate and key
-
   rules:
   - host: example.com
     http:
