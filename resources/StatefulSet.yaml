@@ -1,6 +1,6 @@
-# STATEFUL SET
-StaefulSet is designed to manage stateful applications that require stable, persistent storage and ordered, consistent deployment of Pods.
-StatefulSets are essential for applications such as: databases (MySQL, PostgreSQL), distributed systems (Kafka, ZooKeeper, Cassandra)...
+# StatefulSet
+# Designed to manage stateful applications that require stable, persistent storage and ordered, consistent deployment of Pods.
+# StatefulSets are essential for applications such as: databases (MySQL, PostgreSQL), distributed systems (Kafka, ZooKeeper, Cassandra)...
 
 # Key Features:
 #   - Stable Pod Identity : each Pod get a stable unique network identity (DNS and hostname) and ordinal index (e.g. web-0, web-1)
@@ -11,23 +11,22 @@ StatefulSets are essential for applications such as: databases (MySQL, PostgreSQ
 #   - Scaling and Updates are also in order
 
 # Pods are given consistent DNS hostnames:
-#   <pod-name>.<statefulset-name>.<namespace>.svc.cluster.local
+  <pod-name>.<statefulset-name>.<namespace>.svc.cluster.local
 
 # StatefulSets rely on headless services for stable networking.
 # A headless service is a service without cluster IP, allowing Kubernetes to generate stable DNS entries for each Pod.
-#   <stateful-pod-name>.<service-name>.<namespace>.svc.cluster.local
+  <stateful-pod-name>.<service-name>.<namespace>.svc.cluster.local
 # For example StatefulSet named web with service name nginx-headless:
-#   web-0.nginx-headless.default.svc.cluster.local
+  web-0.nginx-headless.default.svc.cluster.local
 
 --- 
 
 apiVersion: apps/v1
-kind: StatefulSet  # Defines this resource as a StatefulSet
+kind: StatefulSet
 metadata:
-  name: web  # Name of the StatefulSet
+  name: web
   labels:
     app: nginx
-
 spec:
   serviceName: "nginx"  # Headless service for stable network identity
   replicas: 3           # Number of desired Pods
@@ -45,9 +44,8 @@ spec:
           requests:
             storage: 1Gi  # Each Pod gets 1Gi of storage
 
-  # Pod management policy can be OrderedReady (default) or Parallel
+  # Pod management policy can be OrderedReady (default) || Parallel
   podManagementPolicy: OrderedReady  # Pods are created and terminated in sequence
-
   template:
     metadata:
       labels:
@@ -70,7 +68,7 @@ spec:
   # updateStrategy:
   #   type: RollingUpdate
   #   rollingUpdate:
-  #     partition: 1  # Only update Pods with ordinal index greater than or equal to 1
+  #     partition: 1    # Only update Pods with ordinal index greater than or equal to 1
 
   # Define the stateful, stable network identity using a headless service
   serviceName: "nginx-headless"  # Name of the headless service for this StatefulSet
