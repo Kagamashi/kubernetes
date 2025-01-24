@@ -1,22 +1,20 @@
 # ADMISSION CONTROLLER
-Admission Controllers are special components in Kubernetes that intercept and potentially modify requests to the API server before the objects are persisted to the cluster.
-Validating Admission Controllers: Validate requests and can accept or reject them based on defined rules.
-Mutating Admission Controllers: Can modify or mutate objects before they are persisted.
+# Admission Controllers are special components in Kubernetes that intercept and potentially modify requests to the API server before the objects are persisted to the cluster.
+#   Validating Admission Controllers: Validate requests and can accept or reject them based on defined rules.
+#   Mutating Admission Controllers: Can modify or mutate objects before they are persisted.
 
 
 # ADMISSION WEBHOOK
-Admission Webhooks extend admission controller functionality by allowing custom logic to be executed through external webhooks.
-This allows Kubernetes clusters to be extended with custom policies or security requirements.
-
-Admission Webhooks allow you to implement custom admission control logic outside the API server. They can be used to validate or mutate resources in real-time when they are created or updated.
-MutatingAdmissionWebhook: Mutates the incoming request, typically by adding or modifying fields.
-ValidatingAdmissionWebhook: Validates the incoming request, ensuring it meets certain conditions before it is accepted.
+# Admission Webhooks extend admission controller functionality by allowing custom logic to be executed through external webhooks.
+# This allows Kubernetes clusters to be extended with custom policies or security requirements.
+#   MutatingAdmissionWebhook: Mutates the incoming request, typically by adding or modifying fields.
+#   ValidatingAdmissionWebhook: Validates the incoming request, ensuring it meets certain conditions before it is accepted.
 
 # Admission Controller Workflow:
-# 1. Request: user/system makes request to Kubernetes API 
-# 2. Authentication and Authorization: Kubernetes checks if user is authenticated and authorized to make request 
-# 3. Admission Controller Invocation: request is pased to admission controllers which can modify or validate it 
-# 4. Object Persistence: if all admission controllers pass the request, it is persisted in etcd and corresponding resources are created 
+# 1. Request:                           user/system makes request to Kubernetes API 
+# 2. Authentication and Authorization:  Kubernetes checks if user is authenticated and authorized to make request 
+# 3. Admission Controller Invocation:   request is pased to admission controllers which can modify or validate it 
+# 4. Object Persistence:                if all admission controllers pass the request, it is persisted in etcd and corresponding resources are created 
 
 ---
 
@@ -98,3 +96,14 @@ webhooks:
 # objectSelector: Filters which objects the webhook applies to, based on labels. In this example, it only applies to Pods labeled as nginx or redis.
 # sideEffects: Specifies whether the webhook has side effects. "None" indicates that the webhook doesn’t modify other resources.
 # admissionReviewVersions: Specifies the API versions of the AdmissionReview object that the webhook can handle.
+
+---
+
+# Configure Admission Webhook
+# 1. Prepare Webhook Server: write logic using programming languages like Python || Go || Node.js
+# 2. Package the server into a Docker container and deploy into cluster (using Deployments || Stateful Set)
+# 3. Expose webhook server within cluster using Kubernetes Service
+# 4. Create a MutatingWebhookConfiguration || ValidatingWebhookConfiguration to define the webhook for specific resource types,
+# operations and conditions.
+# 5. Create a CA certificate and sign it with a private key to secure communication between the webhook server and the API server.
+# 6. Update the MutatingWebhookConfiguration || ValidatingWebhookConfiguration with the CA certificate.
