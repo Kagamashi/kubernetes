@@ -1,24 +1,26 @@
-# NAMESPACE 
-Namespace is a way to divide cluster resources between multiple users, teams or environments. 
+# Namespace 
+# Used to divide cluster resources between multiple users, teams or environments. 
 
 # - Resource Quotas to enforce limits on number of resources (Pods, Services etc..) and amount of CPU/memory used within the Namespace
 # - LimitRange to enforce default resource requests and limits for containers
 # - If namespace is not specified, Kubernetes uses default
 
 # Built-in Namespaces:
-#   default: The default Namespace used when no Namespace is specified.
-#   kube-system: Namespace for resources created by Kubernetes itself (e.g., system components like the API server, controller manager, etc.).
-#   kube-public: A special Namespace that is readable by all users (including unauthenticated users), typically used for public resources.
+#   default:         The default Namespace used when no Namespace is specified.
+#   kube-system:     Namespace for resources created by Kubernetes itself (e.g., system components like the API server, controller manager, etc.).
+#   kube-public:     A special Namespace that is readable by all users (including unauthenticated users), typically used for public resources.
 #   kube-node-lease: Namespace used for node lease objects to determine node health.
 
 # Not all resources are namespaced:
 #   - Nodes
 #   - PersistentVolumes 
 #   - ClusterRoles 
+#   - ClusterRoleBindings
+#   - Namespaces themselves
 
 --- 
 
-apiVersion: v1  # API version for Namespaces
+apiVersion: v1
 kind: Namespace  # Defines this resource as a Namespace
 metadata:
   name: my-namespace  # Name of the Namespace
@@ -27,12 +29,12 @@ metadata:
 
 --- 
 
-# Resource Quota
+# ResourceQuota
 apiVersion: v1
 kind: ResourceQuota
 metadata:
   name: my-quota
-  namespace: my-namespace  # Specifies which Namespace the quota applies to
+  namespace: my-namespace     # Specifies which Namespace the quota applies to
 spec:
   hard:
     pods: "10"                # Limit the number of Pods
@@ -47,7 +49,7 @@ apiVersion: v1
 kind: LimitRange
 metadata:
   name: my-limit-range
-  namespace: my-namespace  # Specifies the Namespace
+  namespace: my-namespace    # Specifies the Namespace
 spec:
   limits:
     - type: Container
@@ -57,29 +59,3 @@ spec:
       defaultRequest:
         cpu: "250m"          # Default CPU request per container
         memory: "512Mi"      # Default memory request per container
-
-
-# Namespace-scoped Roles
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  namespace: my-namespace  # Role is scoped to this Namespace
-  name: pod-reader          # Name of the Role
-rules:
-  - apiGroups: [""]
-    resources: ["pods"]
-    verbs: ["get", "watch", "list"]  # Permissions to read Pods
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: read-pods-binding
-  namespace: my-namespace  # RoleBinding is scoped to this Namespace
-subjects:
-  - kind: User
-    name: jane              # User "jane" will be granted this role
-    apiGroup: rbac.authorization.k8s.io
-roleRef:
-  kind: Role
-  name: pod-reader          # Reference to the Role
-  apiGroup: rbac.authorization.k8s.io
