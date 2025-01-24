@@ -15,7 +15,8 @@ If logs don’t provide enough information, use kubectl exec to open a shell in 
 Use kubectl debug to add an ephemeral debugging container to troubleshoot Pods that lack utilities like curl or ping.
 5. **Port Forwarding for Access:**
 Use kubectl port-forward to access internal services for local debugging when services aren’t exposed externally.
-6. **Use Visual Tools:**
+6. **Use Visual Tools:*
+7. 
 Leverage visual tools like Kubernetes Dashboard, Lens, or Octant to gain real-time insights into cluster health, resource usage, and Pod status.
 
 ---
