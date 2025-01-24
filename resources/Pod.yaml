@@ -2,24 +2,23 @@
 
 ---
 
-apiVersion: v1           # API version of the Kubernetes resource
-kind: Pod                # Resource type (Pod in this case)
+apiVersion: v1
+kind: Pod
 metadata:
-  name: my-pod           # Name of the Pod
+  name: my-pod
   labels:                # Labels to organize and select Pods
     app: my-app
     env: production
   annotations:           # Annotations are for storing metadata (non-selective)
     description: "This pod runs the my-app container"
 spec:
-  restartPolicy: Always   # Pod restart policy (Always, OnFailure, Never)
+  restartPolicy: Always                   # Pod restart policy (Always || OnFailure || Never)
   serviceAccountName: my-service-account  # Attach a service account for the Pod
-  automountServiceAccountToken: false  # Disable auto-mounting of ServiceAccount token
-
-  containers:            # List of containers within the Pod (can be more than one)
+  automountServiceAccountToken: false     # Disable auto-mounting of ServiceAccount token
+  containers:             # List of containers within the Pod (can be more than one)
     - name: my-container  # Name of the container
       image: nginx:latest # Container image and tag
-      imagePullPolicy: IfNotPresent # How to pull the image (Always, IfNotPresent, Never)
+      imagePullPolicy: IfNotPresent # How to pull the image (Always || IfNotPresent || Never)
       
       command:            # Override the container's entry point
         - "/bin/bash"
@@ -103,7 +102,7 @@ spec:
             values:
             - ssd
 
-  hostNetwork: false       # Use the host’s network namespace
+  hostNetwork: false        # Use the host’s network namespace
   dnsPolicy: ClusterFirst   # DNS policy for the Pod
   securityContext:          # Pod-level security settings
     runAsUser: 1000         # UID to run the container
