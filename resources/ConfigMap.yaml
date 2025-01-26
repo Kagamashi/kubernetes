@@ -15,7 +15,7 @@ data:              # Data block contains key-value pairs of non-sensitive data
   database_url: "jdbc:mysql://localhost:3306/mydb"
   log_level: "INFO"
 
-
+---
 # You can also load data from files (from the command line):
 # kubectl create configmap my-config --from-file=config.properties
 apiVersion: v1
@@ -32,7 +32,7 @@ data:
       "port": 8080
     }
 
-
+---
 # ConfigMap with Binary Data
 apiVersion: v1
 kind: ConfigMap
@@ -65,7 +65,7 @@ spec:
               name: my-config
               key: log_level
 
-
+---
 # ConfigMap as Volumes
 apiVersion: v1
 kind: Pod
@@ -84,7 +84,7 @@ spec:
       configMap:
         name: my-config  # Name of the ConfigMap
 
-
+---
 # ConfigMap for CLI Arguments
 apiVersion: v1
 kind: Pod
