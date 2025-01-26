@@ -70,6 +70,7 @@ spec:
   policyTypes:
   - Ingress            # Deny all incoming traffic
 
+---
 
 # Allow Ingress from Specific Namespace
 apiVersion: networking.k8s.io/v1
@@ -92,6 +93,7 @@ spec:
     - protocol: TCP
       port: 443                    # Allow traffic on port 443 (HTTPS)
 
+---
 
 # Allow Egress to Specific IP Range
 apiVersion: networking.k8s.io/v1
