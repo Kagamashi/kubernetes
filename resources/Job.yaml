@@ -55,6 +55,7 @@ spec:
 # Manual cleanup
 kubectl delete job my-job
 
+---
 # TTL (Time-To-Live): for automatic cleanup use ttlSecondsAfterFinished feature
 apiVersion: batch/v1
 kind: Job
