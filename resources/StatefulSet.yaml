@@ -15,9 +15,9 @@
 
 # StatefulSets rely on headless services for stable networking.
 # A headless service is a service without cluster IP, allowing Kubernetes to generate stable DNS entries for each Pod.
-  <stateful-pod-name>.<service-name>.<namespace>.svc.cluster.local
+#  <stateful-pod-name>.<service-name>.<namespace>.svc.cluster.local
 # For example StatefulSet named web with service name nginx-headless:
-  web-0.nginx-headless.default.svc.cluster.local
+#   web-0.nginx-headless.default.svc.cluster.local
 
 --- 
 
@@ -69,9 +69,6 @@ spec:
   #   type: RollingUpdate
   #   rollingUpdate:
   #     partition: 1    # Only update Pods with ordinal index greater than or equal to 1
-
-  # Define the stateful, stable network identity using a headless service
-  serviceName: "nginx-headless"  # Name of the headless service for this StatefulSet
 
 --- 
 
