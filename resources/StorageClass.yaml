@@ -67,6 +67,7 @@ reclaimPolicy: Retain              # Retain the PV after PVC is deleted
 allowVolumeExpansion: true         # Allow volume expansion
 volumeBindingMode: WaitForFirstConsumer  # Wait for a Pod to request the volume before provisioning
 
+---
 
 # Example of a PersistentVolumeClaim(PVC) with StorageClass
 apiVersion: v1
