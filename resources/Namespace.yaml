@@ -43,7 +43,7 @@ spec:
     limits.cpu: "8"           # Total CPU limit for all Pods cannot exceed 8 cores
     limits.memory: "32Gi"     # Total memory limit for all Pods cannot exceed 32Gi
 
-
+---
 # LimitRange
 apiVersion: v1
 kind: LimitRange
