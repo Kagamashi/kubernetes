@@ -85,6 +85,13 @@ spec:
           name: my-volume
           readOnly: false  # Whether the volume is read-only or read-write
 
+      startupProbe: # use for long initialization applications
+        httpGet:
+          path: /startup
+          port: 8080
+        failureThreshold: 30  # Allow up to 5 minutes (30 * 10s) to start
+        periodSeconds: 10
+
       readinessProbe:      # Checks if the container is ready to serve traffic
         httpGet:
           path: /healthz
