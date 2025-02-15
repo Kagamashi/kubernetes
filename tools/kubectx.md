@@ -1,13 +1,71 @@
-With this tool, you don’t have to make use of lengthy “kubectl config” commands to switch between contexts. This tool is particularly useful to switch context between clusters in a multi-cluster environment.
-Installation:
-sudo git clone https://github.com/ahmetb/kubectx /opt/kubectx
-sudo ln -s /opt/kubectx/kubectx /usr/local/bin/kubectx
-Syntax:
-To list all contexts:
+# KUBECTX: Kubernetes Context Switcher
+
+## **Overview**  
+`kubectx` is a command-line tool that allows users to **quickly switch between Kubernetes contexts**. This is useful when working with multiple clusters or environments, such as **development, staging, and production clusters**. `kubectx` helps streamline cluster management by avoiding the need to manually set contexts using long `kubectl config use-context` commands.
+
+---
+
+## **Installation**  
+You can install `kubectx` using `brew`, `apt`, or manually:
+
+### **Using Homebrew (macOS/Linux):**  
+```bash
+brew install kubectx
+```
+
+### **Using apt (Debian/Ubuntu):**  
+```bash
+sudo apt install kubectx
+```
+
+### **Manual Installation:**  
+```bash
+curl -LO https://github.com/ahmetb/kubectx/releases/latest/download/kubectx
+chmod +x kubectx
+sudo mv kubectx /usr/local/bin/
+```
+
+---
+
+## **Basic Usage**  
+
+### **1. List Available Contexts**  
+```bash
 kubectx
-To switch to a new context:
-kubectx
-To switch back to the previous context:
-kubectx –
-To see the current context:
-kubectx -c
+```
+Output example:
+```
+dev-cluster
+staging-cluster
+prod-cluster *
+```
+The `*` indicates the currently active context.
+
+### **2. Switch to a Different Kubernetes Context**  
+```bash
+kubectx dev-cluster
+```
+This switches the active Kubernetes context to **dev-cluster**.
+
+### **3. Check the Current Context**  
+```bash
+kubectl config current-context
+```
+
+### **4. Rename a Kubernetes Context**  
+```bash
+kubectx old-name=new-name
+```
+This renames a context for better readability.
+
+### **5. Delete an Unused Context**  
+```bash
+kubectx -d old-cluster
+```
+
+### **6. Use in a Single Command Without Switching Permanently**  
+```bash
+kubectx dev-cluster && kubectl get nodes
+```
+
+---
