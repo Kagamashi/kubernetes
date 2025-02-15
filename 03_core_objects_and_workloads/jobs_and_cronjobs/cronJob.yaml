@@ -59,6 +59,9 @@ spec:
 # metadata: Contains the name of the CronJob and optional labels for organizing and selecting resources.
 # spec.schedule: The schedule for the CronJob, defined using cron syntax. In this example, the Job runs every 5 minutes (*/5 * * * *).
 # spec.concurrencyPolicy: Defines how to handle concurrent Jobs. The options are:
+#   Allow
+#   Forbid
+#   Replace
 # spec.successfulJobsHistoryLimit and failedJobsHistoryLimit: Define how many successful or failed Job records to retain for troubleshooting or review. In this example, the last 3 successful Jobs and the last failed Job are kept.
 # jobTemplate: Defines the Job template, which specifies the task to run, the container image, and other Pod settings. This template is the same as for a regular Job, including:
 #   containers: The container that runs the task, with the image, command, and arguments.
