@@ -1,3 +1,11 @@
 [submodule "tools/kustomize"]
 	path = tools/kustomize
 	url = git@github.com:Kagamashi/kustomize.git
+
+[submodule "tools/istio"]
+	path = tools/istio
+	url = git@github.com:Kagamashi/Istio.git
+
+[submodule "tools/argocd"]
+	path = tools/argocd
+	url = git@github.com:Kagamashi/argocd.git
