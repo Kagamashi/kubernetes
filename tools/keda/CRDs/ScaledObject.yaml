@@ -1,6 +1,6 @@
 
 # Defines how KEDA should sclae our application and what the triggers are
-# for deployments, statefulSets..
+# for deployments, statefulSets
 
 # .spec.ScaleTargetRef : reference target resource
 
@@ -37,3 +37,9 @@ spec:
   # {list of triggers to activate scaling of the target resource}
 
 ---
+
+# minReplicaCount: The minimum number of replicas KEDA will maintain (default: 0).
+# maxReplicaCount: The maximum number of replicas allowed.
+# cooldownPeriod: Time (in seconds) before scaling down after an inactivity period (default: 300).
+# pollingInterval: How often KEDA checks trigger conditions (default: 30 seconds).
+# successfulJobsHistoryLimit / failedJobsHistoryLimit: Number of historical job records to keep for reference.
