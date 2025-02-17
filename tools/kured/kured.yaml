@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: kured
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      name: kured
+  template:
+    metadata:
+      labels:
+        name: kured
+    spec:
+      containers:
+      - name: kured
+        image: quay.io/weaveworks/kured:latest
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: run
+          mountPath: /var/run
+      volumes:
+      - name: run
+        hostPath:
+          path: /var/run
+
+---
