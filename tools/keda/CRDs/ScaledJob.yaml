@@ -1,6 +1,6 @@
 
 # Used to define how KEDA should scale our application and what the triggers are
-# more useful for short-lived jobs or batch processing tasks
+# for short-lived jobs or batch processing tasks
 
 apiVersion: keda.sh/v1alpha1
 kind: ScaledJob
@@ -35,3 +35,11 @@ spec:
       queueName: hello
       host: RabbitMqHost
       queueLength  : '5'
+
+---
+
+# minReplicaCount: The minimum number of replicas KEDA will maintain (default: 0).
+# maxReplicaCount: The maximum number of replicas allowed.
+# cooldownPeriod: Time (in seconds) before scaling down after an inactivity period (default: 300).
+# pollingInterval: How often KEDA checks trigger conditions (default: 30 seconds).
+# successfulJobsHistoryLimit / failedJobsHistoryLimit: Number of historical job records to keep for reference.
