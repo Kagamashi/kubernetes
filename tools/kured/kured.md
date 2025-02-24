@@ -1,3 +1,9 @@
+
+https://kured.dev/docs/
+https://github.com/kubereboot/kured/releases/
+
+---
+
 # Kured: Kubernetes Reboot Daemon
 
 ## **What is Kured?**

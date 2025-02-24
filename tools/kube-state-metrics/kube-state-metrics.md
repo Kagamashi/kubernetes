@@ -1,3 +1,9 @@
+
+Resources:
+https://github.com/kubernetes/kube-state-metrics//examples/standard?ref=v2.14.0
+
+---
+
 # Kube-State-Metrics: Kubernetes Resource Monitoring
 
 ## **What is Kube-State-Metrics?**

@@ -1,3 +1,9 @@
+
+-  https://raw.githubusercontent.com/kubereboot/kured/1.17.0/kured-rbac.yaml
+-  https://raw.githubusercontent.com/kubereboot/kured/1.17.0/kured-ds-signal.yaml
+
+---
+
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -11,6 +17,8 @@ spec:
     metadata:
       labels:
         name: kured
+      annotations:
+        container.apparmor.security.beta.kubernetes.io/kured: unconfined
     spec:
       containers:
       - name: kured
@@ -24,5 +32,8 @@ spec:
       - name: run
         hostPath:
           path: /var/run
+      tolerations:
+        - key: CirticalAddonsonly
+          operator: Exists
 
 ---
